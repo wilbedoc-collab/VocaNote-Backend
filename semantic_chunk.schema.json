@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VocaNote Semantic Chunk",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "chunk_id",
+    "recording_id",
+    "semantic_prompt_version",
+    "provider",
+    "model",
+    "model_config",
+    "input_hash",
+    "global_context_hash",
+    "primary",
+    "overlap_context",
+    "provenance",
+    "semantic_extraction_scope"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "vocanote.semantic_chunk.v1"
+    },
+    "chunk_id": {
+      "type": "string",
+      "pattern": "^chunk_[0-9]{4}$"
+    },
+    "recording_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "semantic_prompt_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_config": {
+      "type": "object"
+    },
+    "input_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "global_context_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "semantic_extraction_scope": {
+      "const": "PRIMARY_ONLY"
+    },
+    "primary": {
+      "type": "object",
+      "required": [
+        "range",
+        "source_segment_ids",
+        "text_chars",
+        "segments"
+      ],
+      "properties": {
+        "range": {
+          "$ref": "#/$defs/range"
+        },
+        "source_segment_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "uniqueItems": true
+        },
+        "text_chars": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/segment"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "overlap_context": {
+      "type": "object",
+      "required": [
+        "range",
+        "source_segment_ids",
+        "text_chars",
+        "segments",
+        "context_only"
+      ],
+      "properties": {
+        "range": {
+          "$ref": "#/$defs/range"
+        },
+        "source_segment_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "uniqueItems": true
+        },
+        "text_chars": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/segment"
+          }
+        },
+        "context_only": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "source_segment_ids",
+        "primary_source_segment_ids",
+        "overlap_context_segment_ids"
+      ],
+      "properties": {
+        "source_segment_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "uniqueItems": true
+        },
+        "primary_source_segment_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "uniqueItems": true
+        },
+        "overlap_context_segment_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "uniqueItems": true
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$defs": {
+    "range": {
+      "type": "object",
+      "required": [
+        "start_segment_id",
+        "end_segment_id"
+      ],
+      "properties": {
+        "start_segment_id": {
+          "type": "integer"
+        },
+        "end_segment_id": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "segment": {
+      "type": "object",
+      "required": [
+        "segment_id",
+        "speaker",
+        "start",
+        "end",
+        "text"
+      ],
+      "properties": {
+        "segment_id": {
+          "type": "integer"
+        },
+        "speaker": {
+          "type": "string"
+        },
+        "start": {
+          "type": "number",
+          "minimum": 0
+        },
+        "end": {
+          "type": "number",
+          "minimum": 0
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

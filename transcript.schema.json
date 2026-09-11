@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VocaNote Transcript Correction Result",
+  "type": "object",
+  "required": ["schema_version", "recording_id", "language", "segments", "warnings"],
+  "properties": {
+    "schema_version": {"const": "vocanote.transcript.v1"},
+    "recording_id": {"type": "string", "minLength": 1},
+    "language": {"type": "string", "minLength": 2},
+    "segments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["index", "speaker", "start", "end", "raw_text", "corrected_text", "uncertain"],
+        "properties": {
+          "index": {"type": "integer", "minimum": 0},
+          "speaker": {"type": "string"},
+          "start": {"type": "number", "minimum": 0},
+          "end": {"type": "number", "minimum": 0},
+          "raw_text": {"type": "string"},
+          "corrected_text": {"type": "string"},
+          "uncertain": {"type": "boolean"},
+          "note": {"type": "string"}
+        },
+        "additionalProperties": true
+      }
+    },
+    "warnings": {"type": "array", "items": {"type": "string"}},
+    "pipeline_version": {"type": "string", "minLength": 1},
+    "snapshot_version": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

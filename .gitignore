@@ -1,0 +1,48 @@
+# Runtime secrets / credentials
+.upload_token
+.env
+*.env
+vocanote_google_credentials.json
+vocanote_google_token.json
+vocanote_auth_url.txt
+vocanote_drive_verify_probe.txt
+*credentials*.json
+*token*.json
+
+# Runtime databases / queues
+*.sqlite
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+*.db
+jobs.sqlite3
+
+# Logs
+*.log
+*.out.log
+*.err.log
+
+# Runtime recording data / generated artifacts
+recordings/
+uploads/
+.trash/
+validation_runs/
+stt_benchmark_runs/
+stt_benchmark_cases.json
+PHASE*_REPORT.md
+PHASE*_REPORT.json
+phase86_*validation.py
+phase86_watchdog_*.py
+
+# Python / caches
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.venv/
+venv/
+
+# OS / IDE
+.DS_Store
+.idea/
+*.iml

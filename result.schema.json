@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VocaNote Semantic Result",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "recording_id",
+    "language",
+    "content_type",
+    "title",
+    "keywords",
+    "memo_summary",
+    "structured_note",
+    "quality"
+  ],
+  "properties": {
+    "schema_version": {"const": "vocanote.result.v1"},
+    "recording_id": {"type": "string", "minLength": 1},
+    "language": {"type": "string", "minLength": 2},
+    "content_type": {"enum": ["meeting", "lecture", "idea", "conversation", "test", "other"]},
+    "title": {
+      "type": "object",
+      "required": ["text", "filename_slug"],
+      "properties": {
+        "text": {"type": "string", "minLength": 2, "maxLength": 80},
+        "filename_slug": {"type": "string", "minLength": 1, "maxLength": 80},
+        "reason": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "keywords": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 8,
+      "items": {"type": "string", "minLength": 1, "maxLength": 40}
+    },
+    "memo_summary": {
+      "type": "object",
+      "required": ["topic", "one_line", "core_points", "flow"],
+      "properties": {
+        "topic": {"type": "string", "minLength": 1},
+        "one_line": {"type": "string", "minLength": 1},
+        "core_points": {"type": "array", "items": {"type": "string", "minLength": 1}, "maxItems": 8},
+        "flow": {"type": "array", "items": {"type": "string", "minLength": 1}, "maxItems": 10}
+      },
+      "additionalProperties": false
+    },
+    "structured_note": {
+      "type": "object",
+      "required": ["note_type", "sections"],
+      "properties": {
+        "note_type": {"enum": ["meeting", "lecture", "idea", "conversation", "test", "other"]},
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["heading", "items"],
+            "properties": {
+              "heading": {"type": "string", "minLength": 1},
+              "items": {"type": "array", "items": {"type": "string", "minLength": 1}, "maxItems": 12}
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "quality": {
+      "type": "object",
+      "required": ["needs_review", "warnings"],
+      "properties": {
+        "needs_review": {"type": "boolean"},
+        "uncertain_segments": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+        "warnings": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,218 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VocaNote Semantic Chunk Manifest",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "recording_id",
+    "created_at",
+    "semantic_prompt_version",
+    "provider",
+    "model",
+    "model_config",
+    "settings",
+    "global_context_hash",
+    "total_segments",
+    "chunk_count",
+    "semantic_extraction_scope",
+    "chunks"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "vocanote.semantic_manifest.v1"
+    },
+    "recording_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1
+    },
+    "semantic_prompt_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_config": {
+      "type": "object"
+    },
+    "settings": {
+      "type": "object",
+      "required": [
+        "SEMANTIC_CHUNK_TARGET_CHARS",
+        "SEMANTIC_CHUNK_MAX_CHARS",
+        "SEMANTIC_REDUCE_MAX_CHARS",
+        "SEMANTIC_REDUCE_GROUP_MAX_CHARS",
+        "overlap_segments"
+      ],
+      "properties": {
+        "SEMANTIC_CHUNK_TARGET_CHARS": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "SEMANTIC_CHUNK_MAX_CHARS": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "SEMANTIC_REDUCE_MAX_CHARS": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "SEMANTIC_REDUCE_GROUP_MAX_CHARS": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "overlap_segments": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "global_context_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "total_segments": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "chunk_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "semantic_extraction_scope": {
+      "const": "PRIMARY_ONLY"
+    },
+    "chunks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "chunk_id",
+          "path",
+          "input_hash",
+          "primary_range",
+          "overlap_context_range",
+          "primary_source_segment_ids",
+          "overlap_context_segment_ids",
+          "primary_text_chars"
+        ],
+        "properties": {
+          "chunk_id": {
+            "type": "string",
+            "pattern": "^chunk_[0-9]{4}$"
+          },
+          "path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "input_hash": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "primary_range": {
+            "$ref": "#/$defs/range"
+          },
+          "overlap_context_range": {
+            "$ref": "#/$defs/range"
+          },
+          "primary_source_segment_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "uniqueItems": true
+          },
+          "overlap_context_segment_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "uniqueItems": true
+          },
+          "primary_text_chars": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "processing",
+              "completed",
+              "failed"
+            ]
+          },
+          "attempts": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "output_path": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "output_hash": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "processing_started_at": {
+            "type": "string"
+          },
+          "completed_at": {
+            "type": "string"
+          },
+          "last_error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "last_error_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "phase2b_stats": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "range": {
+      "type": "object",
+      "required": [
+        "start_segment_id",
+        "end_segment_id"
+      ],
+      "properties": {
+        "start_segment_id": {
+          "type": "integer"
+        },
+        "end_segment_id": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
